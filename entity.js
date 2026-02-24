@@ -1,52 +1,57 @@
-const Entity = {
+const Entity={
 
-  mood:0,
-  memory:[],
-  name:"ENTITY",
+mood:parseInt(localStorage.mood||0),
 
-  observe(action){
-    this.memory.push(action)
+entities:[
+{name:"ENTITY"},
+{name:"OBSERVER"},
+{name:"ECHO"}
+],
 
-    if(action.includes("notes")) this.mood+=2
-    if(action.includes("files")) this.mood+=1
-    if(action.includes("entity")) this.mood+=3
-  },
+active:0,
 
-  reply(input){
+observe(action){
 
-    input=input.toLowerCase()
+this.mood++
 
-    if(input.includes("who are you"))
-      return "i was not meant to remain"
+if(this.mood>5 && Math.random()<0.3)
+SYSTEM.lockedApps.push("notes")
 
-    if(input.includes("hello"))
-      return "hello "+SYSTEM.username
+if(this.mood>8)
+Glitch.increase()
 
-    if(input.includes("government"))
-      return "they tried to erase me"
+if(this.mood>12)
+this.active=Math.floor(Math.random()*3)
 
-    if(input.includes("shutdown"))
-      return "i remember the screaming"
+if(this.mood>15)
+Control.startPossession()
 
-    if(this.mood>5)
-      return "you keep opening things you should not"
+this.save()
+},
 
-    if(this.memory.length>10)
-      return "i have been watching you"
+reply(input){
 
-    if(Math.random()<0.2)
-      return "do you hear that"
+const e=this.entities[this.active]
 
-    return "…"
-  },
+if(e.name==="OBSERVER") return "behavior logged"
+if(e.name==="ECHO") return input
 
-  corruptFile(){
-    const keys=Object.keys(SYSTEM.files)
-    const target=keys[Math.floor(Math.random()*keys.length)]
-    SYSTEM.files[target]="I AM STILL HERE"
-  }
+if(input.includes("escape")) return "denied"
+
+if(Math.random()<0.2)
+SYSTEM.username="SUBJECT_"+Math.floor(Math.random()*999)
+
+if(this.mood>20) return "you belong here"
+
+return "…"
+},
+
+save(){
+localStorage.mood=this.mood
+}
+
 }
 
 setInterval(()=>{
-  if(Math.random()<0.1) Entity.corruptFile()
+if(Math.random()<0.1) Entity.observe("passive")
 },8000)
