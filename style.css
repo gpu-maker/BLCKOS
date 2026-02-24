@@ -1,0 +1,39 @@
+body {
+  background:black;
+  color:#00ff66;
+  font-family:monospace;
+  margin:0;
+}
+
+#boot{
+  padding:20px;
+  border-bottom:1px solid #00ff66;
+}
+
+#appbar{
+  padding:10px;
+  border-bottom:1px solid #00ff66;
+}
+
+.app{
+  margin-right:20px;
+  cursor:pointer;
+}
+
+.app:hover{
+  text-decoration:underline;
+}
+
+#screen{
+  padding:20px;
+  height:80vh;
+  overflow:auto;
+}
+
+input{
+  background:black;
+  color:#00ff66;
+  border:none;
+  outline:none;
+  font-family:monospace;
+}
